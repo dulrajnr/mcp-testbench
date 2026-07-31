@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, codex/rank-ladder-ci-20260801]
   pull_request:
 
 jobs:
