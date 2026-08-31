@@ -46,3 +46,24 @@ jobs:
         with:
           server: "node dist/index.js"
 ```
+
+## Optional: Tool Outcome Attestation (TOA) after the action
+
+Testbench covers protocol conformance and declarative suites.
+[TOA](https://github.com/Carmel-Labs-Inc/toa) is adjacent delivery evidence: verify a signed `toa/0.1` JSON after the action when `toa.json` is present.
+
+This does not add a new check ID to mcp-testbench. No AgentStatus account is required to verify.
+
+```yaml
+      - uses: kero168/mcp-testbench@main
+        with:
+          server: "node dist/index.js"
+
+      - name: Verify tool delivery attestation
+        if: hashFiles('toa.json') != ''
+        run: |
+          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@345f24607919b5bdf143719b9ea062543cdfe88e#subdirectory=python"
+          toa-verify toa.json --require-layer functional=pass
+```
+
+Full copy-paste: [`examples/toa-after-testbench.yml`](../examples/toa-after-testbench.yml).

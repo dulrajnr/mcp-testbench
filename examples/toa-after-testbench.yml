@@ -1,0 +1,30 @@
+# Example only. Copy into an MCP server repo as needed.
+# Protocol testbench, then optional TOA verify (delivery evidence).
+name: MCP testbench and optional TOA
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  mcp-and-toa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: npm ci && npm run build
+
+      - uses: kero168/mcp-testbench@main
+        with:
+          server: "node dist/index.js"
+
+      # Optional: only runs when toa.json is present in the workspace.
+      - name: Verify tool delivery attestation
+        if: hashFiles('toa.json') != ''
+        run: |
+          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@345f24607919b5bdf143719b9ea062543cdfe88e#subdirectory=python"
+          toa-verify toa.json --require-layer functional=pass

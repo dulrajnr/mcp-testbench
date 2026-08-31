@@ -95,6 +95,31 @@ The `github` reporter emits GitHub Actions annotations for every failure.
 Exit code is `1` when any check fails, so your pipeline fails too.
 A `json` reporter is available for any other CI system.
 
+### Optional: Tool Outcome Attestation (TOA) after testbench
+
+Protocol checks (C000–C040 and YAML suites) and tool-delivery evidence are different.
+[TOA](https://github.com/Carmel-Labs-Inc/toa) (`toa/0.1`) is a signed JSON format for delivery grades.
+It is not a testbench check ID and is not meant for every live `tools/call`.
+
+If CI already has a `toa.json` from any emitter, you can optionally fail the job when offline verify fails.
+Off by default. No AgentStatus account is required to verify.
+
+```yaml
+      - uses: kero168/mcp-testbench@main
+        with:
+          server: "node dist/index.js"
+
+      # Optional. Provide toa.json from your emit step or an artifact.
+      - name: Verify tool delivery attestation
+        if: hashFiles('toa.json') != ''
+        run: |
+          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@345f24607919b5bdf143719b9ea062543cdfe88e#subdirectory=python"
+          toa-verify toa.json --require-layer functional=pass
+```
+
+See [`examples/toa-after-testbench.yml`](./examples/toa-after-testbench.yml).
+Pin the emitter public key with the flags documented in the toa repo when you need a specific signer.
+
 ## Transports
 
 | Transport | Config |
