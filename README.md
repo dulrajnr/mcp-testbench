@@ -101,7 +101,7 @@ Protocol checks (C000–C040 and YAML suites) and tool-delivery evidence are dif
 [TOA](https://github.com/Carmel-Labs-Inc/toa) (`toa/0.1`) is a signed JSON format for delivery grades.
 It is not a testbench check ID and is not meant for every live `tools/call`.
 
-If CI already has a `toa.json` from any emitter, you can optionally fail the job when offline verify fails.
+If CI already has a `toa.json` from AgentStatus (or another emitter whose key you pin), you can optionally fail the job when offline verify fails. The example below requires `emitter.name=agentstatus` and uses the packaged AgentStatus key; pass `--public-key` for another issuer.
 Off by default. No AgentStatus account is required to verify.
 
 ```yaml
