@@ -113,12 +113,12 @@ Off by default. No AgentStatus account is required to verify.
       - name: Verify tool delivery attestation
         if: hashFiles('toa.json') != ''
         run: |
-          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@345f24607919b5bdf143719b9ea062543cdfe88e#subdirectory=python"
-          toa-verify toa.json --require-layer functional=pass
+          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@5a1bf1cf6a15a4864ea809fe7b2a073f2cef4e22#subdirectory=python"
+          toa-verify toa.json --require-emitter agentstatus --require-layer functional=pass --max-age 7d
 ```
 
 See [`examples/toa-after-testbench.yml`](./examples/toa-after-testbench.yml).
-Pin the emitter public key with the flags documented in the toa repo when you need a specific signer.
+Always pass `--require-emitter` (and `--max-age` when you need freshness). See the toa repo for `--public-key`.
 
 ## Transports
 

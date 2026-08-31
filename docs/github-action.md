@@ -62,8 +62,8 @@ This does not add a new check ID to mcp-testbench. No AgentStatus account is req
       - name: Verify tool delivery attestation
         if: hashFiles('toa.json') != ''
         run: |
-          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@345f24607919b5bdf143719b9ea062543cdfe88e#subdirectory=python"
-          toa-verify toa.json --require-layer functional=pass
+          pip install "git+https://github.com/Carmel-Labs-Inc/toa.git@5a1bf1cf6a15a4864ea809fe7b2a073f2cef4e22#subdirectory=python"
+          toa-verify toa.json --require-emitter agentstatus --require-layer functional=pass --max-age 7d
 ```
 
 Full copy-paste: [`examples/toa-after-testbench.yml`](../examples/toa-after-testbench.yml).
